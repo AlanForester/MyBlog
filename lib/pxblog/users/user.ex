@@ -1,4 +1,5 @@
 defmodule Pxblog.Users.User do
+
   use Ecto.Schema
   import Ecto.Changeset
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
@@ -9,6 +10,8 @@ defmodule Pxblog.Users.User do
     field :username, :string
 
     timestamps()
+
+    has_many :posts, Pxblog.Posts.Post
 
     # Virtual Fields
     field :password, :string, virtual: true

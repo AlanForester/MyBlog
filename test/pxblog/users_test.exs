@@ -12,12 +12,7 @@ defmodule Pxblog.UsersTest do
       password_confirmation: "test1234",
       username: "some username"
     }
-    @update_attrs %{
-      email: "some updated email",
-      password: "test321",
-      password_confirmation: "test321",
-      username: "some updated username"
-    }
+
     @invalid_attrs %{email: nil, password: nil, password_confirmation: nil, username: nil}
 
     test "changeset with valid attributes" do

@@ -17,6 +17,10 @@
   <%= password_input f, :password, class: "form-control" %>
   <%= error_tag f, :password %>
 
+  <%= label f, :password_confirmation, "Password Confirmation", class: "control-label" %>
+  <%= password_input f, :password_confirmation, class: "form-control" %>
+  <%= error_tag f, :password_confirmation %>
+
   <div>
     <%= submit "Save" %>
   </div>
