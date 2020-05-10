@@ -1,10 +1,9 @@
 defmodule Pxblog.UsersTest do
   use Pxblog.DataCase
 
-  alias Pxblog.Users
+  alias Pxblog.Users.User
 
   describe "users" do
-    alias Pxblog.Users.User
 
     @valid_attrs %{
       email: "some email",

@@ -4,14 +4,14 @@ defmodule PxblogWeb.PostControllerTest do
 
   use PxblogWeb.ConnCase
 
-  alias Pxblog.{Posts, Posts.Post, Users.User, Repo}
+  alias Pxblog.{Posts.Post, Users.User, Repo}
 
   @create_attrs %{body: "some body", title: "some title"}
   @update_attrs %{body: "some updated body", title: "some updated title"}
   @invalid_attrs %{body: nil, title: nil}
 
   setup do
-    {:ok, user} = create_user
+    {:ok, user} = create_user()
     conn = build_conn()
     |> login_user(user)
     {:ok, conn: conn, user: user}
@@ -74,6 +74,23 @@ defmodule PxblogWeb.PostControllerTest do
     conn = delete conn, Routes.user_post_path(conn, :delete, user, post)
     assert redirected_to(conn) == Routes.user_post_path(conn, :index, user)
     refute Repo.get(Post, post.id)
+  end
+
+  test "redirects when the specified user does not exist", %{conn: conn} do
+    conn = get conn, Routes.user_post_path(conn, :index, -1)
+    assert get_flash(conn, :error) == "Invalid user!"
+    assert redirected_to(conn) == Routes.page_path(conn, :index)
+    assert conn.halted
+  end
+
+  test "redirects when trying to edit a post for a different user", %{conn: conn, user: user} do
+    other_user = User.changeset(%User{}, %{email: "test2@test.com", username: "test2", password: "test", password_confirmation: "test"})
+    |> Repo.insert!
+    post = build_post(user)
+    conn = get conn, Routes.user_post_path(conn, :edit, other_user, post)
+    assert get_flash(conn, :error) == "You are not authorized to modify that post!"
+    assert redirected_to(conn) == Routes.page_path(conn, :index)
+    assert conn.halted
   end
 
   defp create_user do
