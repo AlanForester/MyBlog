@@ -2,6 +2,7 @@ defmodule Pxblog.UsersTest do
   use Pxblog.DataCase
 
   alias Pxblog.Users.User
+  alias Pxblog.TestHelper
 
   describe "users" do
 
@@ -14,8 +15,13 @@ defmodule Pxblog.UsersTest do
 
     @invalid_attrs %{email: nil, password: nil, password_confirmation: nil, username: nil}
 
-    test "changeset with valid attributes" do
-      changeset = User.changeset(%User{}, @valid_attrs)
+    setup do
+      {:ok, role}  = TestHelper.create_role(%{name: "user", admin: false})
+      {:ok, role: role}
+    end
+
+    test "changeset with valid attributes", %{role: role} do
+      changeset = User.changeset(%User{}, valid_attrs(role))
       assert changeset.valid?
     end
 
@@ -35,4 +41,9 @@ defmodule Pxblog.UsersTest do
     end
 
   end
+
+  defp valid_attrs(role) do
+    Map.put(@valid_attrs, :role_id, role.id)
+  end
+
 end

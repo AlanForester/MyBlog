@@ -6,6 +6,8 @@ defmodule Pxblog.Role do
     field :admin, :boolean, default: false
     field :name, :string
 
+    has_many :users, Pxblog.Users.User
+
     timestamps()
   end
 
