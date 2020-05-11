@@ -31,6 +31,7 @@ defmodule Pxblog.MixProject do
         :postgrex,
         :comeonin,
         :ex_machina,
+        :earmark,
       ],
       extra_applications: [:runtime_tools],
     ]
@@ -59,6 +60,7 @@ defmodule Pxblog.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 2.3"},
       {:ex_machina, "~> 2.4"},
+      {:earmark, "> 1.4.3" }
     ]
   end
 
