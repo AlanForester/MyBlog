@@ -4,6 +4,7 @@ defmodule Pxblog.Factory do
   alias Pxblog.Role
   alias Pxblog.Users.User
   alias Pxblog.Posts.Post
+  alias Pxblog.Comment
 
   @spec role_factory :: Pxblog.Role.t()
   def role_factory do
@@ -29,6 +30,15 @@ defmodule Pxblog.Factory do
       title: "Some Post",
       body: "And the body of some post",
       user: build(:user)
+    }
+  end
+
+  def comment_factory do
+    %Comment{
+      author: "Test User",
+      body: "This is a sample comment",
+      approved: false,
+      post: build(:post)
     }
   end
 

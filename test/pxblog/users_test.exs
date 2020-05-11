@@ -2,7 +2,6 @@ defmodule Pxblog.UsersTest do
   use Pxblog.DataCase
 
   alias Pxblog.Users.User
-  alias Pxblog.TestHelper
 
   describe "users" do
 
@@ -16,7 +15,7 @@ defmodule Pxblog.UsersTest do
     @invalid_attrs %{email: nil, password: nil, password_confirmation: nil, username: nil}
 
     setup do
-      {:ok, role}  = TestHelper.create_role(%{name: "user", admin: false})
+      role = insert(:role)
       {:ok, role: role}
     end
 
