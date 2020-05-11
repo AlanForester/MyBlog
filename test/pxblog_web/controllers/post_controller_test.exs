@@ -82,7 +82,7 @@ defmodule PxblogWeb.PostControllerTest do
   end
 
   test "redirects when trying to edit a post for a different user", %{conn: conn, role: role, post: post} do
-    {:ok, other_user} = TestHelper.create_user(role, %{email: "test2@test.com", username: "test2", password: "test", password_confirmation: "test"})
+    other_user = insert(:user, role: role)
     conn = get conn, user_post_path(conn, :edit, other_user, post)
     assert get_flash(conn, :error) == "You are not authorized to modify that post!"
     # assert redirected_to(conn) == page_path(conn, :index)
@@ -90,7 +90,7 @@ defmodule PxblogWeb.PostControllerTest do
   end
 
   test "redirects when trying to delete a post for a different user", %{conn: conn, role: role, post: post} do
-    {:ok, other_user} = TestHelper.create_user(role, %{email: "test2@test.com", username: "test2", password: "test", password_confirmation: "test"})
+    other_user = insert(:user, role: role)
     conn = delete conn, user_post_path(conn, :delete, other_user, post)
     assert get_flash(conn, :error) == "You are not authorized to modify that post!"
     # assert redirected_to(conn) == page_path(conn, :index)
@@ -98,8 +98,8 @@ defmodule PxblogWeb.PostControllerTest do
   end
 
   test "renders form for editing chosen resource when logged in as admin", %{conn: conn, user: user, post: post} do
-    {:ok, role}  = TestHelper.create_role(%{name: "Admin", admin: true})
-    {:ok, admin} = TestHelper.create_user(role, %{username: "admin", email: "admin@test.com", password: "test", password_confirmation: "test"})
+    role  = insert(:role)
+    admin = insert(:user, role: role)
     conn =
       login_user(conn, admin)
       |> get(user_post_path(conn, :edit, user, post))
@@ -108,8 +108,8 @@ defmodule PxblogWeb.PostControllerTest do
   end
 
   test "updates chosen resource and redirects when data is valid when logged in as admin", %{conn: conn, user: user, post: post} do
-    {:ok, role}  = TestHelper.create_role(%{name: "Admin", admin: true})
-    {:ok, admin} = TestHelper.create_user(role, %{username: "admin", email: "admin@test.com", password: "test", password_confirmation: "test"})
+    role  = insert(:role)
+    admin = insert(:user, role: role)
     conn =
       login_user(conn, admin)
       |> put(user_post_path(conn, :update, user, post), post: @valid_attrs)
@@ -118,8 +118,8 @@ defmodule PxblogWeb.PostControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid when logged in as admin", %{conn: conn, user: user, post: post} do
-    {:ok, role}  = TestHelper.create_role(%{name: "Admin", admin: true})
-    {:ok, admin} = TestHelper.create_user(role, %{username: "admin", email: "admin@test.com", password: "test", password_confirmation: "test"})
+    role  = insert(:role)
+    admin = insert(:user, role: role)
     conn =
       login_user(conn, admin)
       |> put(user_post_path(conn, :update, user, post), post: %{"body" => nil})
@@ -128,8 +128,8 @@ defmodule PxblogWeb.PostControllerTest do
   end
 
   test "deletes chosen resource when logged in as admin", %{conn: conn, user: user, post: post} do
-    {:ok, role}  = TestHelper.create_role(%{name: "Admin", admin: true})
-    {:ok, admin} = TestHelper.create_user(role, %{username: "admin", email: "admin@test.com", password: "test", password_confirmation: "test"})
+    role  = insert(:role)
+    admin = insert(:user, role: role)
     conn =
       login_user(conn, admin)
       |> delete(user_post_path(conn, :delete, user, post))

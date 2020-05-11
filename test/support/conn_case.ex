@@ -28,7 +28,7 @@ defmodule PxblogWeb.ConnCase do
       import Ecto
 
       alias PxblogWeb.Router.Helpers, as: Routes
-
+      alias Pxblog.Repo
       # The default endpoint for testing
       @endpoint PxblogWeb.Endpoint
     end

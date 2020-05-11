@@ -1,13 +1,8 @@
 defmodule PxblogWeb.UserControllerTest do
   use PxblogWeb.ConnCase
 
-  import Routes
-  import Pxblog.Factory
-
   alias Pxblog.{Users, Users.User}
   alias Pxblog.Role
-  alias Pxblog.TestHelper
-  alias Pxblog.Repo
 
   @valid_create_attrs %{email: "test@test.com", username: "test", password: "test", password_confirmation: "test"}
   @valid_attrs %{email: "test@test.com", username: "test"}
@@ -145,7 +140,7 @@ defmodule PxblogWeb.UserControllerTest do
 
   @tag admin: true
   test "deletes chosen resource when logged in as that user", %{conn: conn, user_role: user_role} do
-    {:ok, user} = TestHelper.create_user(user_role, @valid_create_attrs)
+    user = insert(:user, role: user_role)
     conn =
       login_user(conn, user)
       |> delete(user_path(conn, :delete, user))
@@ -155,7 +150,7 @@ defmodule PxblogWeb.UserControllerTest do
 
   @tag admin: true
   test "deletes chosen resource when logged in as an admin", %{conn: conn, user_role: user_role, admin_user: admin_user} do
-    {:ok, user} = TestHelper.create_user(user_role, @valid_create_attrs)
+    user = insert(:user, role: user_role)
     conn =
       login_user(conn, admin_user)
       |> delete(user_path(conn, :delete, user))
@@ -165,7 +160,7 @@ defmodule PxblogWeb.UserControllerTest do
 
   @tag admin: true
   test "redirects away from deleting chosen resource when logged in as a different user", %{conn: conn, user_role: user_role, nonadmin_user: nonadmin_user} do
-    {:ok, user} = TestHelper.create_user(user_role, @valid_create_attrs)
+    user = insert(:user, role: user_role)
     conn =
       login_user(conn, nonadmin_user)
       |> delete(user_path(conn, :delete, user))
