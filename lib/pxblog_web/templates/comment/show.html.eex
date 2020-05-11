@@ -1,1 +1,0 @@
-<%= render PxblogWeb.CommentView, "form.html", changeset: @comment_changeset, action: Routes.post_comment_path(@conn, :create, @post) %>
