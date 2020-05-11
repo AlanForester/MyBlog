@@ -21,9 +21,8 @@ defmodule Pxblog.DataCase do
       alias Pxblog.Repo
 
       import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-      import Pxblog.DataCase
+      import Ecto.{Changeset, Query}
+      import Pxblog.{DataCase, Factory}
     end
   end
 

@@ -23,6 +23,9 @@ defmodule PxblogWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import PxblogWeb.ConnCase
+      import Pxblog.Factory
+      import PxblogWeb.Router.Helpers
+      import Ecto
 
       alias PxblogWeb.Router.Helpers, as: Routes
 
