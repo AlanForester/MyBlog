@@ -1,5 +1,6 @@
 defmodule Pxblog.Role do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   schema "roles" do

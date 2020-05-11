@@ -13,6 +13,10 @@
   <%= text_input f, :email %>
   <%= error_tag f, :email %>
 
+  <%= label f, :role_id, "Role", class: "control-label" %>
+  <%= select f, :role_id, roles_for_select(@roles), class: "form-control" %>
+  <%= error_tag f, :role_id %>
+
   <%= label f, :password, "Password", class: "control-label" %>
   <%= password_input f, :password, class: "form-control" %>
   <%= error_tag f, :password %>

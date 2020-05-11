@@ -3,27 +3,16 @@ defmodule PxblogWeb.UserController do
 
   alias Pxblog.Users
   alias Pxblog.Users.User
+  alias Pxblog.Role
+  alias Pxblog.Repo
+
+  plug :scrub_params, "user" when action in [:create, :update]
+  plug :authorize_admin when action in [:new, :create]
+  plug :authorize_user when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
     users = Users.list_users()
     render(conn, "index.html", users: users)
-  end
-
-  def new(conn, _params) do
-    changeset = Users.change_user(%User{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
-  def create(conn, %{"user" => user_params}) do
-    case Users.create_user(user_params) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "User created successfully.")
-        |> redirect(to: Routes.user_path(conn, :show, user))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
   end
 
   def show(conn, %{"id" => id}) do
@@ -31,23 +20,45 @@ defmodule PxblogWeb.UserController do
     render(conn, "show.html", user: user)
   end
 
+  def new(conn, _params) do
+    roles = Repo.all(Role)
+    changeset = User.changeset(%User{})
+    render(conn, "new.html", changeset: changeset, roles: roles)
+  end
+
   def edit(conn, %{"id" => id}) do
-    user = Users.get_user!(id)
-    changeset = Users.change_user(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
+    roles = Repo.all(Role)
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user)
+    render(conn, "edit.html", user: user, changeset: changeset, roles: roles)
+  end
+
+  def create(conn, %{"user" => user_params}) do
+    roles = Repo.all(Role)
+    changeset = User.changeset(%User{}, user_params)
+
+    case Repo.insert(changeset) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, "User created successfully.")
+        |> redirect(to: Routes.user_path(conn, :index))
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset, roles: roles)
+    end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Users.get_user!(id)
+    roles = Repo.all(Role)
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user, user_params)
 
-    case Users.update_user(user, user_params) do
+    case Repo.update(changeset) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: Routes.user_path(conn, :show, user))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+      {:error, changeset} ->
+        render(conn, "edit.html", user: user, changeset: changeset, roles: roles)
     end
   end
 
@@ -58,5 +69,29 @@ defmodule PxblogWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: Routes.user_path(conn, :index))
+  end
+
+  defp authorize_user(conn, _) do
+    user = get_session(conn, :current_user)
+    if user && (Integer.to_string(user.id) == conn.params["id"] || Pxblog.RoleChecker.is_admin?(user)) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not authorized to modify that user!")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
+
+  defp authorize_admin(conn, _) do
+    user = get_session(conn, :current_user)
+    if user && Pxblog.RoleChecker.is_admin?(user) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not authorized to create new users!")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
   end
 end

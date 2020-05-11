@@ -20,6 +20,9 @@ server:
 migrate:
 	mix ecto.migrate
 
+seed:
+	mix run priv/repo/seeds.exs
+
 clean:
 	mix deps.clean --all
 
