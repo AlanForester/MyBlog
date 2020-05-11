@@ -29,7 +29,8 @@ defmodule Pxblog.MixProject do
         :gettext,
         :phoenix_ecto,
         :postgrex,
-        :comeonin
+        :comeonin,
+        :ex_machina,
       ],
       extra_applications: [:runtime_tools],
     ]
@@ -57,6 +58,7 @@ defmodule Pxblog.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 2.3"},
+      {:ex_machina, "~> 2.4"},
     ]
   end
 
