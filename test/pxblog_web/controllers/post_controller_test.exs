@@ -1,10 +1,6 @@
 defmodule PxblogWeb.PostControllerTest do
   use PxblogWeb.ConnCase
 
-  import Routes
-  import Ecto
-  import Pxblog.Factory
-
   alias Pxblog.Posts.Post
   alias Pxblog.TestHelper
   alias Pxblog.Repo
