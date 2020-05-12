@@ -4,12 +4,13 @@ defmodule PxblogWeb.CommentChannel do
   alias PxblogWeb.CommentHelper
 
   @impl true
-  def join("comments:" <> _comment_id, payload, socket) do
-    if authorized?(payload) do
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+  def join("comments:" <> _comment_id, _payload, socket) do
+    {:ok, socket}
+    # if authorized?(payload) do
+    #   {:ok, socket}
+    # else
+    #   {:error, %{reason: "unauthorized"}}
+    # end
   end
 
   # Channels can be used in a request/response fashion
@@ -46,7 +47,7 @@ defmodule PxblogWeb.CommentChannel do
   end
 
   # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
-  end
+  # defp authorized?(_payload) do
+  #   true
+  # end
 end
