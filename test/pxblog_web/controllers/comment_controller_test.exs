@@ -3,8 +3,8 @@ defmodule PxblogWeb.CommentControllerTest do
 
   alias Pxblog.Comment
 
-  @valid_attrs %{author: "Some Person", body: "This is a sample comment"}
-  @invalid_attrs %{}
+  # @valid_attrs %{author: "Some Person", body: "This is a sample comment"}
+  # @invalid_attrs %{}
 
   defp login_user(conn, user) do
     post conn, session_path(conn, :create), user: %{username: user.username, password: user.password}

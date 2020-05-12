@@ -44,3 +44,5 @@ pxblog.iml
 /.vscode
 /.elixir_ls
 assets/package-lock.json
+
+cover
