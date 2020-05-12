@@ -7,6 +7,7 @@ defmodule PxblogWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug PxblogWeb.CurrentUserPlug
   end
 
   pipeline :api do
@@ -22,7 +23,7 @@ defmodule PxblogWeb.Router do
       resources "/posts", PostController
     end
 
-    resources "/posts", PostController, only: [] do
+    resources "/posts", PostController, only: [:index] do
       resources "/comments", CommentController, only: [:create, :delete, :update]
     end
 
