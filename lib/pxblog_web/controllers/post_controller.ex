@@ -10,6 +10,7 @@ defmodule PxblogWeb.PostController do
 
   plug :assign_user
   plug :authorize_user when action in [:new, :create, :update, :edit, :delete]
+  plug :set_authorization_flag
 
   def index(conn, _params) do
     posts = Repo.all(assoc(conn.assigns[:user], :posts))
@@ -109,6 +110,10 @@ defmodule PxblogWeb.PostController do
       |> redirect(to: Routes.page_path(conn, :index))
       |> halt
     end
+  end
+
+  defp set_authorization_flag(conn, _opts) do
+    assign(conn, :author_or_admin, is_authorized_user?(conn))
   end
 
 end
