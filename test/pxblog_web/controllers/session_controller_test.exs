@@ -1,6 +1,5 @@
 defmodule PxblogWeb.SessionControllerTest do
   use PxblogWeb.ConnCase
-  alias Pxblog.Users.User
   alias Pxblog.TestHelper
 
   setup do

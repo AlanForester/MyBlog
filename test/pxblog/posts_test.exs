@@ -1,8 +1,6 @@
 defmodule Pxblog.PostsTest do
   use Pxblog.DataCase
 
-  alias Pxblog.Posts
-
   describe "posts" do
     alias Pxblog.Posts.Post
 

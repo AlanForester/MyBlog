@@ -2,7 +2,6 @@ defmodule PxblogWeb.PostControllerTest do
   use PxblogWeb.ConnCase
 
   alias Pxblog.Posts.Post
-  alias Pxblog.TestHelper
   alias Pxblog.Repo
 
   @valid_attrs %{body: "some content", title: "some content"}
@@ -110,10 +109,10 @@ defmodule PxblogWeb.PostControllerTest do
   test "updates chosen resource and redirects when data is valid when logged in as admin", %{conn: conn, user: user, post: post} do
     role  = insert(:role)
     admin = insert(:user, role: role)
-    conn =
+    _conn =
       login_user(conn, admin)
       |> put(user_post_path(conn, :update, user, post), post: @valid_attrs)
-    # assert redirected_to(conn) == user_post_path(conn, :show, user, post)
+    assert redirected_to(conn) == page_path(conn, :index)
     assert Repo.get(Post, post.id)
   end
 

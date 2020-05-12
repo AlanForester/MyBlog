@@ -1,8 +1,7 @@
 defmodule PxblogWeb.UserControllerTest do
   use PxblogWeb.ConnCase
 
-  alias Pxblog.{Users, Users.User}
-  alias Pxblog.Role
+  alias Pxblog.{Users.User}
 
   @valid_create_attrs %{email: "test@test.com", username: "test", password: "test", password_confirmation: "test"}
   @valid_attrs %{email: "test@test.com", username: "test"}
