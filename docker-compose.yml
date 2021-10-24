@@ -1,0 +1,32 @@
+version: '3.6'
+services:
+  db:
+    image: postgres:11.5-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/db.sql
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+       - app-network
+  web:
+    build: ./app
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/app
+    networks:
+       - app-network
+    depends_on:
+      - db
+networks:
+  app-network:
+    driver: bridge
